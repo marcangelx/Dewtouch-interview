@@ -22,8 +22,9 @@
 
 <?php echo $this->Form->input('type', array('legend'=>false, 'type' => 'radio', 'options'=>$options_new,'before'=>'<label class="radio line notcheck">','after'=>'</label>' ,'separator'=>'</label><label class="radio line notcheck">'));?>
 
-
 <?php echo $this->Form->end();?>
+
+<button><?php echo $this->Html->link('Save Me','/')?></button>
 
 </div>
 
@@ -44,6 +45,9 @@
 .wrap {
 	white-space: pre-wrap;
 }
+.ui-dialog{
+	background:none !important;
+}
 
 </style>
 
@@ -51,15 +55,30 @@
 <script>
 
 $(document).ready(function(){
+	var oShowDialog = $(".showDialog");
 	$(".dialog").dialog({
 		autoOpen: false,
-		width: '500px',
-		modal: true,
-		dialogClass: 'ui-dialog-blue'
-	});
+		width: 'auto',
+		minHeight: 'auto',
+		modal: false,
+		dialogClass: 'ui-dialog-blue',
+	}).css("background","white");
 
+	$(".ui-dialog-titlebar").hide();
 	
-	$(".showDialog").click(function(){ var id = $(this).data('id'); $("#"+id).dialog('open'); });
+	oShowDialog.hover(function(){
+		
+		var id = $(this).data('id');
+		$("#"+id).dialog('option', 'position', {my: "left bottom", 
+            at: "right bottom", of: $(this)});
+		$("#"+id).dialog('open');
+		$(this).click();
+	 });
+
+	 oShowDialog.mouseout(function(){
+		var id = $(this).data('id');
+		$("#"+id).dialog('close');
+	 });
 
 })
 
