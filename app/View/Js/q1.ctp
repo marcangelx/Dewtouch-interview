@@ -31,13 +31,18 @@ The table you start with</div>
 </thead>
 
 <tbody>
+	<tr class="hide template">
+		<td></td>
+		<td><textarea name="data[0][description]" class="textfields m-wrap description required hide" rows="2" type=""></textarea></td>
+		<td><input name="data[0][quantity]" class="textfields hide"></td>
+		<td><input name="data[0][unit_price]"  class="textfields hide"></td>
+	</tr>
 	<tr>
-	<td></td>
-	<td><textarea name="data[1][description]" class="m-wrap  description required" rows="2" ></textarea></td>
-	<td><input name="data[1][quantity]" class=""></td>
-	<td><input name="data[1][unit_price]"  class=""></td>
-	
-</tr>
+		<td></td>
+		<td><textarea name="data[1][description]" class="textfields m-wrap description required hide" rows="2" type=""></textarea></td>
+		<td><input name="data[1][quantity]" class="textfields hide"></td>
+		<td><input name="data[1][unit_price]"  class="textfields hide"></td>
+	</tr>
 
 </tbody>
 
@@ -57,20 +62,41 @@ Your browser does not support the video tag.
 </p>
 
 
-
+<style>
+	table td {
+		height:25px;
+	}
+	.hide{
+		display:none;
+	}
+</style>>
 
 
 <?php $this->start('script_own');?>
 <script>
 $(document).ready(function(){
+	$('table td').live('click', function(){
+		var oSelectedCell = $(this);
+		oSelectedCell.children().removeClass('hide').focus();
+		oSelectedCell.find('p').remove();
+
+	});
+
+	$('.textfields').live('focusout',function(){
+		$(this).addClass('hide')
+		var sTextValue = $(this).val();
+		$(this).parent().append('<p>' + sTextValue + '</p>');
+		
+	});
+
 
 	$("#add_item_button").click(function(){
 
+		var oCopyTemplate = $('.template').clone();
+		oCopyTemplate.removeClass('hide template');
+		$('table tbody').prepend(oCopyTemplate);
 
-		alert("suppose to add a new row");
-		
-
-		});
+	});
 
 	
 });
