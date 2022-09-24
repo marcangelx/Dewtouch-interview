@@ -7,7 +7,9 @@
 
 			$this->loadModel('Order');
 			$orders = $this->Order->find('all',array('conditions'=>array('Order.valid'=>1),'recursive'=>2));
-			// debug($orders);exit;
+			$aResponse = $this->sortIngredient($orders);
+				// debug(json_encode($aResponse, true));exit;
+
 
 			$this->loadModel('Portion');
 			$portions = $this->Portion->find('all',array('conditions'=>array('Portion.valid'=>1),'recursive'=>2));
@@ -35,10 +37,35 @@
 
 			// ...
 
-			$this->set('order_reports',$order_reports);
+			$this->set('order_reports',$aResponse);
 
 			$this->set('title',__('Orders Report'));
 		}
+
+		private function sortIngredient($aOrders)
+		{
+			$aSortedArray = array();
+			foreach ($aOrders as $aOrder) {
+				$aIngredients = $this->getIngredientNumber($aOrder['OrderDetail']);
+				$aSortedArray[$aOrder['Order']['name']] = $aIngredients;
+			}
+			return $aSortedArray;
+		}
+
+		private function getIngredientNumber($aOrderDetails)
+		{
+			$aIngredients = array();
+			foreach ($aOrderDetails as $aDetail) {
+			
+				if(array_key_exists($aDetail['Item']['name'], $aIngredients)) {
+					$aIngredients[$aDetail['Item']['name']] += $aDetail['quantity'];
+				} else {
+					$aIngredients[$aDetail['Item']['name']] = $aDetail['quantity'];
+				}
+			}
+			return $aIngredients;
+		}
+
 
 		public function Question(){
 
