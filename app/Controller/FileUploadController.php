@@ -11,10 +11,6 @@ class FileUploadController extends AppController {
 	public function upload() {
 		$data = $this->request->data;
 		$file = $data['FileUpload']['file']['tmp_name'];
-		$ext = pathinfo($filename, PATHINFO_EXTENSION);
-		if (!in_array($ext, $allowed)) {
-			$this->setError('The file type is not allowed');
-		}
 		ini_set('auto_detect_line_endings', TRUE);
 		$lines = file($file, FILE_IGNORE_NEW_LINES);
 
