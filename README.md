@@ -1,7 +1,5 @@
 # Dewtouch-interview
 
-## Installation
-
 Requirements :
 - 1.) I have used the XAMPP as a web server.
 - 2.) The php_pdo_mysql.dll extension must be enabled for version compatibility.
